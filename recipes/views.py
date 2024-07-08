@@ -15,6 +15,7 @@ def home(request):
     ).order_by('-id')
 
     page_obj, pagination_range = make_pagination(request, recipes, PER_PAGE)
+
     return render(request, 'recipes/pages/home.html', context = {
         'recipes': page_obj,
         'pagination_range': pagination_range
