@@ -1,0 +1,22 @@
+{% extends 'global/base.html' %}
+{% block title %}Login | {% endblock title %}
+{% block content %}
+<div class="main-content center container">
+    <h2>Login</h2>
+    {% if request.user.is_authenticated %}
+    <div>
+        Your are logged in with
+        {{ request.user.username }}.
+        <form class="inline-form" action="{% url 'authors:logout' %}" method='POST'>
+            {% csrf_token %}
+            <!-- faz com que o seu sistema só aceite requisições vindas do seu próprio sistema, ou seja, se alguém gerar algum link em algum lugar, mandar para seu usuário e ele clicar, o sistema vai proibir (csrf_token inválido / csrf falhou). por isso transformamos o link em um botão de um formulário com método post (explicação na seção 13: csrf (3/3)) -->
+            <input type="hidden" name="username" value="{{ request.user.username }}">
+            <button class="plaintext-button" type="submit">Click here</button>
+        </form> to logout.
+    </div>
+    {% endif %}
+</div>
+
+{% include 'global/partials/messages.html' %}
+{% include 'global/partials/form.html' %}
+{% endblock content %}
