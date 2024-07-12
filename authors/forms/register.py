@@ -71,19 +71,6 @@ class RegisterForm(forms.ModelForm):
             'password',
         ]
 
-    # clean_nomeDoCampoParaValidar => isso é o nome padrão que o django usa para validar campos
-    # def clean_password(self):
-    #     data = self.cleaned_data.get('password')
-
-    #     if 'atenção' in data:
-    #         raise ValidationError(
-    #             'Não digite %(valor)s no campo password',
-    #             code='invalid',
-    #             params={'valor': '"atenção"'}
-    #         )
-
-    #     return data
-
     def clean_email(self):
         email = self.cleaned_data.get('email', '')
         exists = User.objects.filter(email=email).exists()
