@@ -1,10 +1,12 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.urls import reverse
+from django.utils.text import slugify
 
 
 class Category(models.Model):
     name = models.CharField(max_length=65)
-    # abaixo, uma mudança no django administration
+    # abaixo, só uma mudança no django administration
     def __str__(self):
         return self.name
 
@@ -35,10 +37,23 @@ class Recipe(models.Model):
         User, on_delete=models.SET_NULL, null=True
     )
 
+
     def __str__(self):
         return self.title
 
-# EDITED
+
+    def get_absolute_url(self):
+        return reverse('recipes:recipe', args=(self.id,))
+
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            slug = f'{slugify(self.title)}'
+            self.slug = slug
+
+        return super().save(*args, **kwargs)
+
+
 # title description slug
 # preparation_time preparation_time_unit
 # servings servings_unit
@@ -47,5 +62,5 @@ class Recipe(models.Model):
 # created_at updated_at
 # is_published
 # cover
-# category (Relação)
+# Category (Relação)
 # Author (Relação)

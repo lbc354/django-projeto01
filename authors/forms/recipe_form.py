@@ -16,9 +16,7 @@ class AuthorRecipeForm(forms.ModelForm):
 
     class Meta:
         model = Recipe
-        fields = 'title', 'description', 'preparation_time', \
-            'preparation_time_unit', 'servings', 'servings_unit', \
-            'preparation_steps', 'cover'
+        fields = 'title', 'description', 'preparation_time', 'preparation_time_unit', 'servings', 'servings_unit', 'preparation_steps', 'cover'
         widgets = {
             'cover': forms.FileInput(
                 attrs={
@@ -61,7 +59,7 @@ class AuthorRecipeForm(forms.ModelForm):
         title = self.cleaned_data.get('title')
 
         if len(title) < 5:
-            self._my_errors['title'].append('Must have at least 5 chars.')
+            self._my_errors['title'].append('Must have at least 5 chars')
 
         return title
 
