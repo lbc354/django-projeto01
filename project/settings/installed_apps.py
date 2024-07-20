@@ -10,5 +10,5 @@ INSTALLED_APPS = [
 
     'recipes',
     'authors',
-    # não vi a aula que ele insere 'tag', aqui
+    # não peguei a aula que ele insere 'tag', aqui
 ]
