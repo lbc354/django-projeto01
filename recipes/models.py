@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
+from collections import defaultdict
+from django.forms import ValidationError
 
 
 class Category(models.Model):
@@ -37,6 +39,17 @@ class Recipe(models.Model):
         User, on_delete=models.SET_NULL, null=True
     )
 
+    # title description slug
+    # preparation_time preparation_time_unit
+    # servings servings_unit
+    # preparation_step
+    # preparation_step_is_html
+    # created_at updated_at
+    # is_published
+    # cover
+    # Category (Relação)
+    # Author (Relação)
+
 
     def __str__(self):
         return self.title
@@ -54,13 +67,18 @@ class Recipe(models.Model):
         return super().save(*args, **kwargs)
 
 
-# title description slug
-# preparation_time preparation_time_unit
-# servings servings_unit
-# preparation_step
-# preparation_step_is_html
-# created_at updated_at
-# is_published
-# cover
-# Category (Relação)
-# Author (Relação)
+    def clean(self, *args, **kwargs):
+            error_messages = defaultdict(list)
+
+            recipe_from_db = Recipe.objects.filter(
+                title__iexact=self.title
+            ).first()
+
+            if recipe_from_db:
+                if recipe_from_db.pk != self.pk:
+                    error_messages['title'].append(
+                        'Found recipes with the same title'
+                    )
+
+            if error_messages:
+                raise ValidationError(error_messages)
