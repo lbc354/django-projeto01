@@ -6,7 +6,7 @@
         </a>
     </div>
     {% endif %}
-    
+
     <div class="recipe-title-container">
         <h2 class="recipe-title">
             <a href="{{ recipe.get_absolute_url }}">
@@ -18,13 +18,15 @@
     <div class="recipe-author">
         {% if recipe.author is not None %}
         <span class="recipe-author-item">
-            <i class="fas fa-user"></i>
-            {% comment %} {% if recipe.author.first_name | recipe.author.last_name %} <!-- lucas adicionou "ou" --> {% endcomment %}
-            {% if recipe.author.first_name %}
-            {{ recipe.author.first_name }} {{ recipe.author.last_name }}
-            {% else %}
-            {{ recipe.author.username }}
-            {% endif %}
+            {% if recipe.author.profile %}
+            <a href="{% url 'authors:profile' recipe.author.profile.id %}">
+                {% endif %}
+                <i class="fas fa-user"></i>
+                {% if recipe.author.first_name %}
+                {{ recipe.author.first_name }} {{ recipe.author.last_name }}
+                {% else %}
+                {{ recipe.author.username }}
+                {% endif %}
         </span>
         {% endif %}
 
@@ -54,7 +56,7 @@
                 {{ recipe.preparation_time }} {{ recipe.preparation_time_unit }}
             </div>
         </div>
-        
+
         <div class="recipe-meta recipe-servings">
             <h3 class="recipe-meta-title"><i class="fas fa-pizza-slice"></i> Porções</h3>
             <div class="recipe-meta-text">
@@ -75,10 +77,11 @@
     {% if is_detail_page is True %}
     <div class="preparation-steps">
         {% if recipe.preparation_steps_is_html is True %}
-                {{ recipe.preparation_steps|safe }} {% comment %} aceita o conteúdo que vier, nesse caso, aceita um html {% endcomment %}
-            {% else %}
-                {{ recipe.preparation_steps|linebreaksbr }}
-            {% endif %}
+        {{ recipe.preparation_steps|safe }} {% comment %} aceita o conteúdo que vier, nesse caso, aceita um html {%
+        endcomment %}
+        {% else %}
+        {{ recipe.preparation_steps|linebreaksbr }}
+        {% endif %}
     </div>
     {% endif %}
 
